@@ -1,41 +1,41 @@
+#used code from https://www.edureka.co/blog/snake-game-with-pygame/
+#changes: added images, proportions, added multiple enemies and foods, and sounds.
 import pygame
 import time
 import random
  
 pygame.init()
  
-black = (0, 0, 0)
-red = (213, 50, 80)
-green = (0, 255, 0)
-
 scr_width = 800
 scr_height = 600
- 
 screen = pygame.display.set_mode((scr_width, scr_height))
 pygame.display.set_caption('Ant Trap')
+green = (0, 255, 0)
 
 pygame.mixer.music.load("ant music.wav")
 pygame.mixer.music.play(-1)
 
+black = (0, 0, 0)
 clock = pygame.time.Clock()
- 
-ant_block = 10
-speed = 15
- 
-font = pygame.font.SysFont("bahnschrift", 25)
+
+red = (213, 50, 80) 
 score_font = pygame.font.SysFont("bahnschrift", 35)
- 
- 
-def Your_score(score):
+def Score(score):
     value = score_font.render("Your Score: " + str(score), True, red)
     screen.blit(value, [0, 0])
+   
+font = pygame.font.SysFont("bahnschrift", 25)
+def message(msg, color):
+    mesg = font.render(msg, True, color)
+    screen.blit(mesg, [scr_width / 6, scr_height / 3])
  
- 
- 
+#ant 
+ant_block = 10
+speed = 15
 def Ant(ant_block, ant_list):
     for x in ant_list:
         pygame.draw.rect(screen, black, [x[0], x[1], ant_block, ant_block])
-
+#traps
 trapImg=pygame.image.load("spiderweb.png")
 def trap1(x,y):
     screen.blit(trapImg,(x,y)) 
@@ -47,7 +47,7 @@ def trap4(x,y):
     screen.blit(trapImg,(x,y))
 def trap5(x,y):
     screen.blit(trapImg,(x,y))
-
+#foods
 foodImg=pygame.image.load("food.png") 
 def food1(x,y):
     screen.blit(foodImg,(x,y))
@@ -58,20 +58,16 @@ def food3(x,y):
 def food4(x,y):
     screen.blit(foodImg,(x,y))
  
-def message(msg, color):
-    mesg = font.render(msg, True, color)
-    screen.blit(mesg, [scr_width / 6, scr_height / 3])
- 
  
 def gameLoop():
     game_over = False
     game_close = False
  
-    x1 = scr_width / 2
-    y1 = scr_height / 2
+    antx = scr_width / 2
+    anty = scr_height / 2
  
-    x1_change = 0
-    y1_change = 0
+    antx_change = 0
+    anty_change = 0
  
     ant_list = []
     Length = 1
@@ -101,7 +97,7 @@ def gameLoop():
         while game_close == True:
             screen.fill(black)
             message("Game Over! Press Y-Play Again or N-Quit", red)
-            Your_score(Length - 1)
+            Score(Length - 1)
             pygame.mixer.music.stop()
             end_gamesound=pygame.mixer.Sound("end_game.mp3")
             pygame.mixer.Sound.play(end_gamesound)
@@ -120,21 +116,21 @@ def gameLoop():
                 game_over = True
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
-                    x1_change = -ant_block
-                    y1_change = 0
+                    antx_change = -ant_block
+                    anty_change = 0
                 elif event.key == pygame.K_RIGHT:
-                    x1_change = ant_block
-                    y1_change = 0
+                    antx_change = ant_block
+                    anty_change = 0
                 elif event.key == pygame.K_UP:
-                    y1_change = -ant_block
-                    x1_change = 0
+                    anty_change = -ant_block
+                    antx_change = 0
                 elif event.key == pygame.K_DOWN:
-                    y1_change = ant_block
-                    x1_change = 0
-        if x1 >= scr_width or x1 < 0 or y1 >= scr_height or y1 < 0:
+                    anty_change = ant_block
+                    antx_change = 0
+        if antx >= scr_width or antx < 0 or anty >= scr_height or anty < 0:
             game_close = True
-        x1 += x1_change
-        y1 += y1_change
+        antx += antx_change
+        anty += anty_change
         screen.fill(green)
         trap1(trap1x,trap1y)
         trap2(trap2x,trap2y)
@@ -146,8 +142,8 @@ def gameLoop():
         food3(food3x,food3y)
         food4(food4x,food4y)
         ant_Head = []
-        ant_Head.append(x1)
-        ant_Head.append(y1)
+        ant_Head.append(antx)
+        ant_Head.append(anty)
         ant_list.append(ant_Head)
         if len(ant_list) > Length:
             del ant_list[0]
@@ -157,45 +153,45 @@ def gameLoop():
                 game_close = True
  
         Ant(ant_block, ant_list)
-        Your_score(Length - 1)
+        Score(Length - 1)
  
         pygame.display.update()
         if Length==0:
             game_close= True
  
-        if x1 == food1x and y1 == food1y:
+        if antx == food1x and anty == food1y:
             food1x = round(random.randrange(0, scr_width - ant_block) / 10) * 10
             food1y = round(random.randrange(0, scr_height - ant_block) / 10) * 10
             Length += 1
-        if x1 == food2x and y1 == food2y:
+        if antx == food2x and anty == food2y:
             food2x = round(random.randrange(2, scr_width - ant_block) / 10) * 10
             food2y = round(random.randrange(2, scr_height - ant_block) / 10) * 10
             Length += 1
-        if x1 == food3x and y1 == food3y:
+        if antx == food3x and anty == food3y:
             food3x = round(random.randrange(4, scr_width - ant_block) / 10) * 10
             food3y = round(random.randrange(4, scr_height - ant_block) / 10) * 10
             Length += 1
-        if x1 == food4x and y1 == food4y:
+        if antx == food4x and anty == food4y:
             food4x = round(random.randrange(5, scr_width - ant_block) / 10) * 10
             food4y = round(random.randrange(5, scr_height - ant_block) / 10) * 10
             Length += 1
-        if x1 == trap1x and y1 == trap1y:
+        if antx == trap1x and anty == trap1y:
             trap1x = round(random.randrange(0, scr_width - 20) / 10) * 10
             trap1y = round(random.randrange(0, scr_height - 20) / 10) * 10
             Length -= 1
-        if x1 == trap2x and y1 == trap2y:
+        if antx == trap2x and anty == trap2y:
             trap2x = round(random.randrange(1, scr_width - 20) / 10) * 10
             trap2y = round(random.randrange(1, scr_height - 20) / 10) * 10
             Length -= 1
-        if x1 == trap3x and y1 == trap3y:
+        if antx == trap3x and anty == trap3y:
             trap3x = round(random.randrange(2, scr_width - 20) / 10) * 10
             trap3y = round(random.randrange(2, scr_height - 20) / 10) * 10
             Length -= 1
-        if x1 == trap4x and y1 == trap4y:
+        if antx == trap4x and anty == trap4y:
             trap4x = round(random.randrange(3, scr_width - 20) / 10) * 10
             trap4y = round(random.randrange(3, scr_height - 20) / 10) * 10
             Length -= 1
-        if x1 == trap5x and y1 == trap5y:
+        if antx == trap5x and anty == trap5y:
             trap5x = round(random.randrange(5, scr_width - 20) / 10) * 10
             trap5y = round(random.randrange(5, scr_height - 20) / 10) * 10
             Length -= 1
