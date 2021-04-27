@@ -1,6 +1,8 @@
 Ant Trap
 Mia Podgorski
 2021
+presentation:
+https://youtu.be/PhYoji3CtCY
 
 difficulties:
 I attempted to code in object-oriented programming but was not successful. I attempted this a few times before I scraped my code and started new. After this, I had problems making the “ant” or player move correctly using the keys and creating a list of ants but found resources to solve this problem. I used a list to create the snake effect. I could not include my image of an ant for the player because it would not work when I did. I also had a hard time finding a way to use collision detection in pygame so instead, I used X and Y positions to determine if two sprites came in contact. This led to another issue because when the player collides with a “food” or “trap” it must hit the top left corner in order to be detected. I could not find a solution to this that would not require me to start over again. When I thought I had completed everything correctly my screen was coming up as black when I ran the program and then flashed the game as I exited the program. I figured out this was an issue because I needed to update the screen. My game is now functioning correctly. I was supried at how long it took to complete this project.
