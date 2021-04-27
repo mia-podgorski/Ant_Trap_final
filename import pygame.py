@@ -34,7 +34,7 @@ ant_block = 10
 speed = 15
 def Ant(ant_block, ant_list):
     for x in ant_list:
-        pygame.draw.rect(screen, black, [x[0], x[1], ant_block, ant_block])
+        pygame.draw.rect(screen, red, [x[0], x[1], ant_block, ant_block])
 #traps
 trapImg=pygame.image.load("spiderweb.png")
 def trap1(x,y):
